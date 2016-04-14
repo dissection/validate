@@ -1,0 +1,162 @@
+.itext {
+    height: 20px;
+    line-height: 20px;
+    padding: 2px 5px;
+    border: 1px solid #ddd;
+}
+.itext.selt {
+    height: 26px;
+}
+.itext:focus {
+    border-color: #aaa;
+}
+.itext:hover {
+    border-color: #b5b5b5;
+}
+.fred:focus {
+    border-color: #ff0a03;
+}
+.forange:focus {
+    border-color: #f59942;
+}
+.search-input {
+    display: inline-block;
+    width: 180px;
+    height: 24px;
+    border: 1px solid #c9c9c9;
+    position: relative;
+}
+.search-input input {
+    float: left;
+    width: 142px;
+    padding: 6px 4px;
+    vertical-align: middle;
+    height: 12px;
+    border: 0 none;
+    color: #9c9c9c;
+}
+.search-input .ibtn,
+.search-input .ish {
+    right: 0;
+    top: 0;
+    position: absolute;
+    padding: 0;
+    width: 27px;
+    height: 24px;
+    overflow: hidden;
+    text-align: center;
+}
+.search-input .ibtn .fa,
+.search-input .ish .fa {
+    line-height: 22px;
+}
+.search-input .ibtn {
+    border-left: 1px solid #ddd;
+    background-color: #fcfcfc;
+}
+.input-date {
+    height: 30px;
+}
+.input-date span {
+    display: block;
+    float: left;
+    height: 26px;
+    line-height: 26px;
+    margin: 0 5px;
+}
+.input-date .search-input {
+    float: left;
+    width: 100px;
+}
+.input-date .search-input input {
+    width: 65px;
+}
+.input-date .searchicon {
+    border: none;
+}
+.checkone {
+    text-align: center;
+    width: 100px;
+}
+.checkone input {
+    vertical-align: middle;
+    margin-right: 3px;
+}
+.form-group {
+    font-size: 12px;
+    padding: 10px 0;
+    vertical-align: top;
+    overflow: auto;
+}
+.form-group label {
+    display: block;
+    float: left;
+    width: 85px;
+    text-align: right;
+    padding: 5px 15px;
+    color: #111;
+    font-family: 'Open Sans';
+}
+.form-group label i {
+    color: #f23000;
+}
+.form-group textarea {
+    width: 413px;
+    height: 100px;
+    resize: vertical;
+}
+.form-group .gps-date {
+    float: left;
+    width: 388px;
+    height: 30px;
+    border: 1px solid #d5d5d5;
+}
+.form-group .gps-date input {
+    width: 360px;
+    height: 30px;
+    margin: -1px 0 0 -1px;
+}
+
+.btn-md2 {
+    border: 1px solid #cd2700;
+    border-radius: 2px;
+    display: inline-block;
+}
+.btn-md2 a {
+    height: 28px;
+    line-height: 28px;
+    padding: 0 20px;
+    background-color: #fc3f12;
+    border: 1px solid #fe8063;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+}
+.error{
+    display: none;
+    color: #1b1b1b;
+    padding: 0 10px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px #bababa solid;
+    background-color: rgba(186, 186, 186, 0.7);
+    font-size: 12px;
+}
+.error.errorTips{
+    color: #fff;
+    padding: 0 10px;
+    display:inline-block;
+    height: 24px;
+    line-height: 24px;
+    border: 1px #dc1530 solid;
+    background-color: rgba(255, 0, 3, 0.53);
+    font-size: 12px;
+}
+
+.ve_01 .sucess{
+    display: none;
+    width: 26px;
+    height: 26px;
+
+}
