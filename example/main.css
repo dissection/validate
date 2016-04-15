@@ -135,6 +135,20 @@
 }
 .error{
     display: none;
+
+}
+.error.errorTips{
+    display: inline-block;
+    color: #fff;
+    padding: 0 10px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px #dc1530 solid;
+    background-color: rgba(255, 0, 3, 0.53);
+    font-size: 12px;
+}
+.error.tips{
+    display: inline-block;
     color: #1b1b1b;
     padding: 0 10px;
     height: 24px;
@@ -143,20 +157,38 @@
     background-color: rgba(186, 186, 186, 0.7);
     font-size: 12px;
 }
-.error.errorTips{
-    color: #fff;
-    padding: 0 10px;
-    display:inline-block;
-    height: 24px;
-    line-height: 24px;
-    border: 1px #dc1530 solid;
-    background-color: rgba(255, 0, 3, 0.53);
-    font-size: 12px;
-}
-
+/*----------v1--------------*/
 .ve_01 .sucess{
     display: none;
     width: 26px;
     height: 26px;
 
+}
+
+.ve_01 .sucess.dis{
+    display: inline-block;
+}
+
+/*----------v2--------------*/
+.ve_02 .sucess{
+    display: none;
+    width: 26px;
+    height: 26px;
+
+}
+
+.ve_02 .sucess.dis{
+    display: inline-block;
+}
+
+/*----------v2--------------*/
+.ve_03 .sucess{
+    display: none;
+    width: 26px;
+    height: 26px;
+
+}
+
+.ve_03 .sucess.dis{
+    display: inline-block;
 }

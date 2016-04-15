@@ -8,64 +8,64 @@
     Validate.prototype = {
         constructor:Validate,
         init:function(){
-            var _this=this,_valObj=this.option.valObj;
+            var _this=this,_valObj=this.option.config;
             $.each(_valObj,function(i , va){
-                //$(va.ValidateClass).data("validate",va)
                 if(va.isInput) _this.eventVal(va)
             });
         },
         eventVal:function(b){
-            $(b.ValidateClass).data("isFcous",true).focus(function(){
-                $(this).data("isFcous",true);
+            $(b.elem).data("msg",{"isfcous":!0}).focus(function(){
+                $(this).data("msg").isfcous=!0;
 
                 typeof  b.onFocusCall == "function" &&   b.onFocusCall($(this))
 
             }).blur(function(){
 
                 var _this=this,
-                    _mod = typeof b.onBlurMod == "boolean" ? b.onBlurMod=!1 : b.onBlurMod,
+                    _mod = typeof b.level == "boolean" ? b.level=!1 : b.level,
                     $this=$(this),
                     _str=$(this).val(),
                     _intBol=  typeof b.isNull == "function" ? b.isNull(_str) : b.isNull;
 
-                if(!(_intBol && $this.data("isFcous"))) {
+                if(!(_intBol && $(this).data("msg").isfcous)) {
                     _mod && $.each(_mod, function (i, va) {
 
                         if(va.isCustom){
-                            va.magsCall && va.magsCall($this);
+                            va.verifycall && va.verifycall($this);
                         }else{
-                            $this.data("isFcous", typeof va.regFnc =="function" ? va.regFnc(_str) :va.regFnc);
-                            if (!$this.data("isFcous")) {
-                                va.magsCall && va.magsCall($this);
-                                return $this.data("isFcous");
+                            $this.data("msg").isfcous = typeof va.verify =="function" ? va.verify(_str) :va.verify;
+                            //$this.data("isFcous", typeof va.regFnc =="function" ? va.regFnc(_str) :va.regFnc);
+                            if (!$this.data("msg").isfcous) {
+                                va.verifycall && va.verifycall($this);
+                                return $this.data("msg").isfcous
                             }
                         }
 
                     });
                 }
-                if($this.data("isFcous") && !_intBol) b.succeed && b.succeed($this);
-                if($this.data("isFcous") && _intBol)  b.initCall && b.initCall($this);
+                if($this.data("msg").isfcous && !_intBol) b.succeed && b.succeed($this);
+                if($this.data("msg").isfcous && _intBol)  b.initCall && b.initCall($this);
             })
 
 
         },
         submitCtrl:function(){
             var _this=this,
-                _valObj=this.option.valObj,
+                _valObj=this.option.config,
                 _subClass=this.option.subClass,
                 _subSucceedCall = this.option.subSucceedCall,
                 _subErrorCall = this.option.subErrorCall;
             $(_subClass).on("click",function(){
                 var submitIint=!0,$this=$(this),isCommit=!0;
                 $.each(_valObj,function(i , va){
-                    var $ValidateClass=$(va.ValidateClass);
+                    var $ValidateClass=$(va.elem);
                     if(va.isInput){
 
                         var regFncBol=!1,
                             str=$ValidateClass.val(),
                             _intBol = typeof va.isNull == "function" ? va.isNull(str) : va.isNull,
-                            _onBlurMod = typeof  va.onBlurMod == "boolean" ? va.onBlurMod = !1 :va.onBlurMod;
-                        console.log(_intBol)
+                            _onBlurMod = typeof  va.level == "boolean" ? va.level = !1 :va.level;
+                        //console.log(_intBol)
 
                         if(_intBol){
                             if(va.isRequired){
@@ -77,28 +77,23 @@
                             _onBlurMod  && $.each(_onBlurMod, function (key, vaj) {
                                 if(!vaj.isCustom){
 
-                                    regFncBol = typeof vaj.regFnc =="function" ? vaj.regFnc(str) :vaj.regFnc;
-                                    !regFncBol && typeof vaj.magsCall == "function" && vaj.magsCall($ValidateClass) ;
+                                    regFncBol = typeof vaj.verify =="function" ? vaj.verify(str) :vaj.verify;
+                                    !regFncBol && typeof vaj.verifycall == "function" && vaj.verifycall($ValidateClass) ;
 
                                 }else{
-                                    vaj.magsCall && vaj.magsCall($ValidateClass);
+                                    vaj.verifycall && vaj.verifycall($ValidateClass);
                                 }
-
                                 if(isCommit && !regFncBol){
                                     isCommit =!1
                                 }
-
                                 return regFncBol;
                             });
                         }
                     }else{
-                        //console.log(va.stateCall())
-                        //??????
-                        if(va.isRequired && !va.state($ValidateClass) ){
-                            isCommit =!1,
-                                va.stateCall($ValidateClass)
+                        
+                        if(va.isRequired && !va.condition($ValidateClass)){
+                            isCommit =!1
                         }
-
 
                     }
                 });
@@ -109,4 +104,4 @@
 
     };
     win.Validate=Validate;
-}(jQuery,window)
+}(jQuery,window);
