@@ -59,6 +59,7 @@
                 var submitIint=!0,$this=$(this),isCommit=!0;
                 $.each(_valObj,function(i , va){
                     var $ValidateClass=$(va.elem);
+                    if( $ValidateClass.length == 0 ) return true;
                     if(va.isInput){
 
                         var regFncBol=!1,
