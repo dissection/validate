@@ -83,7 +83,7 @@
             companysite: "^http[s]?:\\/\\/([\\w-]+\\.)+[\\w-]+([\\w-./?%&#=]*)?$"
       };
 
-       win.vereg =veReg;
+       win.veg =veReg;
 
 }(window);
 

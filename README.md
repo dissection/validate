@@ -2,44 +2,45 @@
 
 ### 参数格式 和 关键字 [`关键字会以这样的形式`]
 
-        config:  {
-            demo1:{
-                ['elem']:                       ['string']          "class 或者 id"
-                ['isInput']:                    ['Boole']           "是否是 input"
-                ['isRequired']:                 ['Boole']           "是否必填",    
-                ['isNull']:                     ['function']        "判断是否为空"
-                ['isNullCall']:                 ['function']        "isNullCall： 如果 isNull() == true {执行 的 回掉函数}"        
-                ['onFocusCall']:                ['function']         当前为 焦点的时候 所执行的回调函数 [一般 为 input]
-                ['level']:                      ['object','Boole']   如果是Boolean ,只会是 false ,表示验证不再有 验证关卡列
-                                                {
-                                                    line1：{
-                                                         ['isCustom']:!1,       ['Boole']   是否 自定义
-                                                         ['verify']:            ['function'] 对应正则 的函数（）
-                                                         ['verifycall']:        ['function'] 当 verify = !1   对应当前 regFnc 所回应的函数
-                                        
-                                                    },
-                                              
-                                                    line2：{
-                                                         ['isCustom']:!0,       ['Boole']   是否 自定义
-                                                         ['verifycall']:        ['function']    当 isCustom = !0, verifycall 直接回调 处理业务关系
-                                        
-                                                    }
-                                                }
-                ['succeed']:                    ['function']    当验证 全部通过的时候 触发
-                ['initCall']:                   ['function']    还原到到初始状态 触发条件是 : val() 值为空 且离开
-               
+    validator=[
+            {
+                elem:       [string]                        :元素 class id
+                custom:     [Boolean,undefined]             :是否为自定义  
+                required:   [string,Boolean,undefined]      :如果是必填 为空时候所显示的信息
+                notice:     [string]                        :焦点时候提示信息
+                error: [                                    :一开焦点时候的验证
+                   {
+                    level:  [function]                      :验证关卡判断函数 [note:必须返回一个 布尔值 Boolean ]
+                      msg:  [string,undefined]              :如果你需要msg 返回信息那就可以不写 
+                   }
+                   
+                ]
+            },
+            {
+                elem:,
+                custom:true
+                customcall: [function(bol)]                 :自定义函 更具形参 判断 通过或者不通过 
             }
-           demo2:{
-                ['elem']:                       ['string']          "class 或者 id"
-                ['isInput']:                    ['Boole']           "是否是 input"
-                ['isRequired']:                 ['Boole']           "是否必填",    
-                
-                ['condition']:                  ['function']    isInput == false :当验证的列不是 input的时候 **注** 这个函数 必须返回 return false 或者 true 来表示 这一个次 验证的结果是否 通过
-
-           }
             
-         }   
-         
+        
+     ]  
+     
+     
+     new validation({
+          config:validator,                                  :配置 json
+          init:                     [function]               :初始化验证
+          required:                 [function]               :必填
+          notice:                   [function]               :提示
+          success:                  [function]               :成功
+          error:                    [function]               :失败
+          sbtBtn:"#ve_01_btn"                                :提交按钮
+          sbtSucceed:               [function]               :全部通过
+          sbtError:                 [function]               :未通过
+    
+      });
 ### 1.0.0
 解决 大部分 验证表单
 思路： 只是针对当前这一个验证函 执行结果的布尔值 来判断 是否执行 对应的回调函数 仅此而已
+
+### 2.0.0
+重构 优化思路 精简暴露操作

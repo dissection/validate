@@ -6,9 +6,8 @@
     <link href="../base.css" rel="stylesheet">
     <link href="main.css" rel="stylesheet">
     <script src="../jquery.js"></script>
-    <script src="../jQuery.validateRegExp.js"></script>
-    <script src="../src/validate.min.js"></script>
-    <!--<script src="../jQuery.validate.js"></script>-->
+    <script src="../validateRegExp.js"></script>
+    <script src="../validate-2.0.0.js"></script>
 </head>
 
 <body>
@@ -18,7 +17,7 @@
 <div class="ve_01">
     <div class="form-group">
         <label ><i>*</i> 用户名</label>
-        <input type="text" id="username"  class="itext forange"/>
+        <input type="text" id="username"  class="itext forange" />
         <span class="sucess"><img src="img/sucess.png"></span>
         <span class="error "></span>
     </div>
@@ -40,716 +39,219 @@
         <span class="sucess"><img src="img/sucess.png"></span>
         <span class="error "></span>
     </div>
+    <div class="form-group">
+        <label ><i>*</i> 自定义项</label>
+        <select id="free" vdn-pass="true" >
+            <option>true</option>
+            <option>false</option>
+        </select>
+        <span class="sucess"><img src="img/sucess.png"></span>
+        <span class="error "></span>
+    </div>
     <div id="ve_01_btn" class="btn-md2" style="margin-left: 117px;">
         <a>提交</a>
     </div>
 </div>
 <script>
 
-    $(function(){
-        var weakPwdArray = ["123456", "123456789", "111111", "5201314", "12345678", "123123", "password", "1314520", "123321", "7758521", "1234567", "5211314", "666666", "520520", "woaini", "520131", "11111111", "888888", "hotmail.com", "112233", "123654", "654321", "1234567890", "a123456", "88888888", "163.com", "000000", "yahoo.com.cn", "sohu.com", "yahoo.cn", "111222tianya", "163.COM", "tom.com", "139.com", "wangyut2", "pp.com", "yahoo.com", "147258369", "123123123", "147258", "987654321", "100200", "zxcvbnm", "123456a", "521521", "7758258", "111222", "110110", "1314521", "11111111", "12345678", "a321654", "111111", "123123", "5201314", "00000000", "q123456", "123123123", "aaaaaa", "a123456789", "qq123456", "11112222", "woaini1314", "a123123", "a111111", "123321", "a5201314", "z123456", "liuchang", "a000000", "1314520", "asd123", "88888888", "1234567890", "7758521", "1234567", "woaini520", "147258369", "123456789a", "woaini123", "q1q1q1q1", "a12345678", "qwe123", "123456q", "121212", "asdasd", "999999", "1111111", "123698745", "137900", "159357", "iloveyou", "222222", "31415926", "123456", "111111", "123456789", "123123", "9958123", "woaini521", "5201314", "18n28n24a5", "abc123", "password", "123qwe", "123456789", "12345678", "11111111", "dearbook", "00000000", "123123123", "1234567890", "88888888", "111111111", "147258369", "987654321", "aaaaaaaa", "1111111111", "66666666", "a123456789", "11223344", "1qaz2wsx", "xiazhili", "789456123", "password", "87654321", "qqqqqqqq", "000000000", "qwertyuiop", "qq123456", "iloveyou", "31415926", "12344321", "0000000000", "asdfghjkl", "1q2w3e4r", "123456abc", "0123456789", "123654789", "12121212", "qazwsxedc", "abcd1234", "12341234", "110110110", "asdasdasd", "123456", "22222222", "123321123", "abc123456", "a12345678", "123456123", "a1234567", "1234qwer", "qwertyui", "123456789a", "qq.com", "369369", "163.com", "ohwe1zvq", "xiekai1121", "19860210", "1984130", "81251310", "502058", "162534", "690929", "601445", "1814325", "as1230", "zz123456", "280213676", "198773", "4861111", "328658", "19890608", "198428", "880126", "6516415", "111213", "195561", "780525", "6586123", "caonima99", "168816", "123654987", "qq776491", "hahabaobao", "198541", "540707", "leqing123", "5403693", "123456", "123456789", "111111", "5201314", "123123", "12345678", "1314520", "123321", "7758521", "1234567", "5211314", "520520", "woaini", "520131", "666666", "RAND#a#8", "hotmail.com", "112233", "123654", "888888", "654321", "1234567890", "a123456"];
-        var errorTipsfnc=function(t,s){
-            t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
-        };
-        var  succeedpass=function(t){
-            t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
-            t.parent().find(".sucess").addClass("dis")
-        };
-        var onFocusfnc=function(t,s){
-            t.parent().find(".sucess").removeClass("dis");
-            t.parent().find(".error").removeClass("errorTips").addClass("tips").html(s);
-        };
-        var restore=function(t){
-            t.parent().find(".error").removeClass("errorTips").removeClass("tips").empty();
-        };
-        var register={
-            regName: {
-                elem:"#username",
-                isInput:!0,
-                isRequired:!0,
-                isNull:function(str){
-                    return (new RegExp(vereg.empty).test(str));
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输入用户名请输入用户名")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"4-20位字符,支持汉字、字母、数字及\"-\"、\"_\"组合")
-                },
-                level:{
-                    //ajax 检测 用户名是否相同
-                    /*beUsed: function(t,s) {
-                     if(new RegExp(validateRegExp.username+"{6,20}").test(s)){
-                     t.parent().find(".error").html("该用户名已被使用，请重新输入。如果您是该用户，请立刻<a href='......' class='flk13'>登录</a>");
-                     return false;
-                     }
-                     },*/
-                    badLength:{
-                        isCustom:!1,
-                        verify:function(str){
-                            var strlen = str.replace(/[^\x00-\xff]/g, "**")
-                            return strlen.length >= 4 && strlen.length <= 20
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"用户名长度只能在4-20位字符之间")
-                        }
-                    },
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.username).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"用户名只能由中文、英文、数字及\"-\"、\"_\"组成")
+   $(function () {
+       
+       $("#free").on("change",function () {
+           console.log($(this).val())
+           $(this).attr("vdn-pass",$(this).val())
+       });
 
-                        }
-                    },
-                    fullNumberName:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return !new RegExp(vereg.fullNumber).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"用户名不能是纯数字，请重新输入")
+       
+       var weakPwdArray = ["123456", "123456789", "111111", "5201314", "12345678", "123123", "password", "1314520", "123321", "7758521", "1234567", "5211314", "666666", "520520", "woaini", "520131", "11111111", "888888", "hotmail.com", "112233", "123654", "654321", "1234567890", "a123456", "88888888", "163.com", "000000", "yahoo.com.cn", "sohu.com", "yahoo.cn", "111222tianya", "163.COM", "tom.com", "139.com", "wangyut2", "pp.com", "yahoo.com", "147258369", "123123123", "147258", "987654321", "100200", "zxcvbnm", "123456a", "521521", "7758258", "111222", "110110", "1314521", "11111111", "12345678", "a321654", "111111", "123123", "5201314", "00000000", "q123456", "123123123", "aaaaaa", "a123456789", "qq123456", "11112222", "woaini1314", "a123123", "a111111", "123321", "a5201314", "z123456", "liuchang", "a000000", "1314520", "asd123", "88888888", "1234567890", "7758521", "1234567", "woaini520", "147258369", "123456789a", "woaini123", "q1q1q1q1", "a12345678", "qwe123", "123456q", "121212", "asdasd", "999999", "1111111", "123698745", "137900", "159357", "iloveyou", "222222", "31415926", "123456", "111111", "123456789", "123123", "9958123", "woaini521", "5201314", "18n28n24a5", "abc123", "password", "123qwe", "123456789", "12345678", "11111111", "dearbook", "00000000", "123123123", "1234567890", "88888888", "111111111", "147258369", "987654321", "aaaaaaaa", "1111111111", "66666666", "a123456789", "11223344", "1qaz2wsx", "xiazhili", "789456123", "password", "87654321", "qqqqqqqq", "000000000", "qwertyuiop", "qq123456", "iloveyou", "31415926", "12344321", "0000000000", "asdfghjkl", "1q2w3e4r", "123456abc", "0123456789", "123654789", "12121212", "qazwsxedc", "abcd1234", "12341234", "110110110", "asdasdasd", "123456", "22222222", "123321123", "abc123456", "a12345678", "123456123", "a1234567", "1234qwer", "qwertyui", "123456789a", "qq.com", "369369", "163.com", "ohwe1zvq", "xiekai1121", "19860210", "1984130", "81251310", "502058", "162534", "690929", "601445", "1814325", "as1230", "zz123456", "280213676", "198773", "4861111", "328658", "19890608", "198428", "880126", "6516415", "111213", "195561", "780525", "6586123", "caonima99", "168816", "123654987", "qq776491", "hahabaobao", "198541", "540707", "leqing123", "5403693", "123456", "123456789", "111111", "5201314", "123123", "12345678", "1314520", "123321", "7758521", "1234567", "5211314", "520520", "woaini", "520131", "666666", "RAND#a#8", "hotmail.com", "112233", "123654", "888888", "654321", "1234567890", "a123456"];
 
-                        }
-                    }
-                },
-                succeed:function(t){
-                    succeedpass(t)
-
-
-                },
-                initCall:function(t){
-                    restore(t)
-                }
-            },
-            pwd:{
-                elem:"#password",
-                isInput:!0,
-                isRequired:!0,
-                isNull:function(str){
-                    return (new RegExp(vereg.empty).test(str));
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输入密码")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"6-20位字符，字母，数字和符号请使用两种以上组合")
-
-                },
-                level:{
-                    badLength:  {
-                        isCustom:!1,
-                        verify:function(str){
-                            return str.length >= 6 && str.length <= 20
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码长度只能在6-20位字符之间")
-                        }
-                    },
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.password).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码只能由英文、数字及标点符号组成")
-                        }
-                    },
-                    simplePwd:{
-                        isCustom:!1,
-                        verify:function(str){
-                            var _weakPwdArray =!0;
-                            for (var i = 0; i < weakPwdArray.length; i++) {
-                                if (weakPwdArray[i] == str) {
-                                    _weakPwdArray = !1;
-                                    break;
-                                }
-                            }
-                            return _weakPwdArray;
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"该密码比较简单，有被盗风险，建议您更改为复杂密码")
-                        }
-                    },
-                    fitPwd:{
-                        isCustom:!0,
-                        verifycall: function(t){
-
-                            var $OncePassword= $("#OncePassword"),
-                                    _pwdRepeat_val= $OncePassword.val(),
-                                    _password_val= $("#password").val()
-                            if(!new RegExp(vereg.empty).test(_pwdRepeat_val)){
-                                if(_password_val.length === _pwdRepeat_val.length && _password_val === _pwdRepeat_val){
-                                    $OncePassword.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
-                                     $OncePassword.parent().find(".sucess").addClass("dis")
-                                }else{
-                                    errorTipsfnc($OncePassword,"两次密码不正确")
-                                    $OncePassword.parent().find(".sucess").removeClass("dis")
-
-                                }
-                            }
-
-                        }
-                    }
-
-                },
-                succeed:function(t){
-                    succeedpass(t)
-                },
-                initCall:function(t){
-                    restore(t)
-                }
-            },
-            pwdRepeat:{
-                elem:"#OncePassword",
-                isInput:!0,
-                isRequired:!0,
-                isNull:function(str){
-                    var reg_isNull = new RegExp(vereg.empty).test(str);
-                    return (reg_isNull);
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输确认密码")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"请再次输入密码")
-                },
-                level:{
-                    badLength:  {
-                        isCustom:!1,
-                        verify:function(str){
-                            return str.length >= 6 && str.length <= 20
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码长度只能在6-20位字符之间")
-                        }
-                    },
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.password).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码只能由英文、数字及标点符号组成")
-                        }
-                    },
-                    fitPwd:{
-                        isCustom:!1,
-                        verify:function(str){
-                            var _password =$("#password").val();
-                            return _password.length === str.length && _password === str;
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"两次输入密码不一致")
-                        }
-                    }
-
-                },
-                succeed:function(t){
-                    succeedpass(t)
-                },
-                initCall:function(t){
-                    restore(t)
-                }
-            },
-            phone: {
-                elem:"#phone",
-                isInput:!0,
-                isRequired:!0,
-                isNull:function(str){
-                    var reg_isNull = new RegExp(vereg.empty).test(str);
-                    return (reg_isNull);
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输入手机号码")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"完成验证后请用该手机号码，登录或者找回密码")
-                },
-                level:{
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.mobile).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"手机号码格式有误，请输入正确的手机号")
-                        }
-                    }
-                },
-                succeed:function(t){
-                    succeedpass(t)
-                },
-                initCall:function(t){
-                    restore(t)
-                }
-            }
-        };
-        var ve_01 = new Validate({
-            config:register,
-            subClass:"#ve_01_btn",
-            subSucceedCall:function(){
-                alert("成功")
-            },
-            subErrorCall:function(){
-                alert("失败")
-            }
-
-        });
-        ve_01.init();
-        ve_01.submitCtrl();
-    })
-
-</script>
-
-
-
-
-<div class="tit mb20 mt20">
-    <h3>验证</h3>
-</div>
-<div class="ve_02">
-    <div class="form-group">
-        <label>评价</label>
-        <select class="itext selt" id="select1">
-            <option>一般</option>
-            <option>不错</option>
-            <option>很棒</option>
-        </select>
-
-    </div>
-    <div id="selected1" style="padding-left: 75px"  data-condition="0">
-         <span class="checkone">
-            <input type="checkbox" id="z-prom1">
-            <label for="z-prom1">仅显示促销</label>
-        </span>
-        <span class="sucess"><img src="img/sucess.png"></span>
-        <span class="error "></span>
-    </div>
-    <div id="selected2" style="padding-left: 75px" data-condition="0">
-         <span class="checkone">
-            <input type="radio" name="z-prom" id="radio1">
-            <label for="radio1">男</label>
-        </span>
-         <span class="checkone">
-            <input type="radio" name="z-prom" id="radio2">
-            <label for="radio2">女</label>
-        </span>
-        <span class="sucess"><img src="img/sucess.png"></span>
-        <span class="error "></span>
-    </div>
-    <div class="form-group">
-        <label ><i>*</i> 手机号码</label>
-        <input type="text" id="phone2" class="itext forange">
-        <span class="sucess"><img src="img/sucess.png"></span>
-        <span class="error "></span>
-    </div>
-    <div id="ve_02_btn" class="btn-md2" style="margin-left: 117px;">
-        <a>提交</a>
-    </div>
-</div>
-    <script>
-        $(function(){
-            var onFocusfnc=function(t,s){
-                t.parent().find(".sucess").removeClass("dis")
-                t.parent().find(".error").removeClass("errorTips").addClass("tips").html(s)
-            };
-            var  succeedpass=function(t){
-                t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty()
-                t.parent().find(".sucess").addClass("dis")
-            };
-            var  succeedpass2=function(t){
-                t.find(".error").removeClass("tips").removeClass("errorTips").empty()
-                t.find(".sucess").addClass("dis")
-            };
-            var errorTipsfnc=function(t,s){
-                t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
-            };
-            var errorTipsfnc2=function(t,s){
-                t.find(".sucess").removeClass("dis")
-                t.find(".error").removeClass("tips").addClass("errorTips").html(s);
-            };
-            var restore=function(t){
-                t.parent().find(".error").removeClass("errorTips").removeClass("tips").empty()
-            };
-
-            var form2={
-                evaluate:{
-                    elem:"#selected1",
-                    isInput:!1,
-                    isRequired:!0,
-                    condition:function(d){
-                        if($("#z-prom1").is(":checked")){
-                            succeedpass2(d)
-                            return !0
-                        }else{
-                            errorTipsfnc2(d,"这里是必填")
-                            return !1
-                        }
-                    }
-                },
-                radios:{
-                    elem:"#selected2",
-                    isInput:!1,
-                    isRequired:!0,
-                    condition:function(d){
-                        var bol=!1;
-                        $("#selected2").find('input[type="radio"]').each(function(){
-                            if($(this).is(":checked")){
-                                succeedpass2(d)
-                                bol=!0;
-                                return false
-                            }else{
-                                errorTipsfnc2(d ,"请选择单一项")
-                            }
-                        });
-                        return bol
-                    }
-                },
-                phone: {
-                    elem:"#phone2",
-                    isInput:!0,
-                    isRequired:!0,
-                    isNull:function(str){
-                        var reg_isNull = new RegExp(vereg.empty).test(str);
-                        return (reg_isNull);
-                    },
-                    isNullCall:function(t){
-                        errorTipsfnc(t,"请输入手机号码")
-                    },
-                    onFocusCall:function(t){
-                        onFocusfnc(t,"完成验证后请用该手机号码，登录或者找回密码")
-                    },
-                    level:{
-                        badFormat:{
-                            isCustom:!1,
-                            verify:function(str){
-                                return new RegExp(vereg.mobile).test(str);
+       var errorNote=function(t,s){
+               t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
+           };
+            var validator =[
+                {
+                    elem:"#username",
+                    required:"请输入用户名请输入用户名",
+                    notice:"4-20位字符,支持汉字、字母、数字及\"-\"、\"_\"组合",
+                    error:[
+                        {
+                            level:function (char) {
+                                var strlen = char.replace(/[^\x00-\xff]/g, "**")
+                                return strlen.length >= 4 && strlen.length <= 20
                             },
-                            verifycall: function(t){
-                                errorTipsfnc(t,"手机号码格式有误，请输入正确的手机号")
-                            }
-                        }
-                    },
-                    succeed:function(t){
-                        succeedpass(t)
-                    },
-                    initCall:function(t){
-                        restore(t)
-                    }
-                }
-            }
-
-            var ve_02 = new Validate({
-                config:form2,
-                subClass:"#ve_02_btn",
-                subSucceedCall:function(){
-                    alert("成功")
-                },
-                subErrorCall:function(){
-                    alert("失败")
-                }
-
-            });
-            ve_02.init();
-            ve_02.submitCtrl();
-        })
-    </script>
-
-
-
-<div class="tit mb20 mt20">
-    <h3>验证</h3>
-</div>
-<div class="ve_03">
-    <div class="form-group">
-        <label ><i>*</i> 用户名</label>
-        <input type="text" id="username3"  class="itext forange"/>
-        <span class="sucess"><img src="img/sucess.png"></span>
-        <span class="error "></span>
-    </div>
-    <div class="form-group">
-        <label ><i>*</i> 密码</label>
-        <input type="text" id="password3"  class="itext forange">
-        <span class="sucess"><img src="img/sucess.png"></span>
-        <span class="error "></span>
-    </div>
-    <div class="form-group">
-        <label ><i>*</i> 确认密码</label>
-        <input type="text"  id="OncePassword3" class="itext forange">
-        <span class="sucess"><img src="img/sucess.png"></span>
-        <span class="error "></span>
-    </div>
-    <div class="form-group">
-        <label > 手机号码</label>
-        <input type="text" id="phone3" class="itext forange">
-        <span class="sucess"><img src="img/sucess.png"></span>
-        <span class="error "></span>
-    </div>
-    <div id="ve_03_btn" class="btn-md2" style="margin-left: 117px;">
-        <a>提交</a>
-    </div>
-</div>
-<script>
-
-    $(function(){
-        var weakPwdArray = ["123456", "123456789", "111111", "5201314", "12345678", "123123", "password", "1314520", "123321", "7758521", "1234567", "5211314", "666666", "520520", "woaini", "520131", "11111111", "888888", "hotmail.com", "112233", "123654", "654321", "1234567890", "a123456", "88888888", "163.com", "000000", "yahoo.com.cn", "sohu.com", "yahoo.cn", "111222tianya", "163.COM", "tom.com", "139.com", "wangyut2", "pp.com", "yahoo.com", "147258369", "123123123", "147258", "987654321", "100200", "zxcvbnm", "123456a", "521521", "7758258", "111222", "110110", "1314521", "11111111", "12345678", "a321654", "111111", "123123", "5201314", "00000000", "q123456", "123123123", "aaaaaa", "a123456789", "qq123456", "11112222", "woaini1314", "a123123", "a111111", "123321", "a5201314", "z123456", "liuchang", "a000000", "1314520", "asd123", "88888888", "1234567890", "7758521", "1234567", "woaini520", "147258369", "123456789a", "woaini123", "q1q1q1q1", "a12345678", "qwe123", "123456q", "121212", "asdasd", "999999", "1111111", "123698745", "137900", "159357", "iloveyou", "222222", "31415926", "123456", "111111", "123456789", "123123", "9958123", "woaini521", "5201314", "18n28n24a5", "abc123", "password", "123qwe", "123456789", "12345678", "11111111", "dearbook", "00000000", "123123123", "1234567890", "88888888", "111111111", "147258369", "987654321", "aaaaaaaa", "1111111111", "66666666", "a123456789", "11223344", "1qaz2wsx", "xiazhili", "789456123", "password", "87654321", "qqqqqqqq", "000000000", "qwertyuiop", "qq123456", "iloveyou", "31415926", "12344321", "0000000000", "asdfghjkl", "1q2w3e4r", "123456abc", "0123456789", "123654789", "12121212", "qazwsxedc", "abcd1234", "12341234", "110110110", "asdasdasd", "123456", "22222222", "123321123", "abc123456", "a12345678", "123456123", "a1234567", "1234qwer", "qwertyui", "123456789a", "qq.com", "369369", "163.com", "ohwe1zvq", "xiekai1121", "19860210", "1984130", "81251310", "502058", "162534", "690929", "601445", "1814325", "as1230", "zz123456", "280213676", "198773", "4861111", "328658", "19890608", "198428", "880126", "6516415", "111213", "195561", "780525", "6586123", "caonima99", "168816", "123654987", "qq776491", "hahabaobao", "198541", "540707", "leqing123", "5403693", "123456", "123456789", "111111", "5201314", "123123", "12345678", "1314520", "123321", "7758521", "1234567", "5211314", "520520", "woaini", "520131", "666666", "RAND#a#8", "hotmail.com", "112233", "123654", "888888", "654321", "1234567890", "a123456"];
-        var errorTipsfnc=function(t,s){
-            t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
-        };
-        var  succeedpass=function(t){
-            t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty()
-            t.parent().find(".sucess").addClass("dis")
-        };
-        var onFocusfnc=function(t,s){
-            t.parent().find(".sucess").removeClass("dis")
-            t.parent().find(".error").removeClass("errorTips").addClass("tips").html(s)
-        };
-        var restore=function(t){
-            t.parent().find(".error").removeClass("errorTips").removeClass("tips").empty()
-        };
-        var register3={
-            regName: {
-                elem:"#username3",
-                isInput:!0,
-                isRequired:!0,
-                isNull:function(str){
-                    console.log(new RegExp(vereg.empty).test(str))
-                    return (new RegExp(vereg.empty).test(str));
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输入用户名请输入用户名")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"4-20位字符,支持汉字、字母、数字及\"-\"、\"_\"组合")
-                },
-                level:{
-                    //ajax 检测 用户名是否相同
-                    /*beUsed: function(t,s) {
-                     if(new RegExp(validateRegExp.username+"{6,20}").test(s)){
-                     t.parent().find(".error").html("该用户名已被使用，请重新输入。如果您是该用户，请立刻<a href='......' class='flk13'>登录</a>");
-                     return false;
-                     }
-                     },*/
-                    badLength:{
-                        isCustom:!1,
-                        verify:function(str){
-                            var strlen = str.replace(/[^\x00-\xff]/g, "**")
-                            return strlen.length >= 4 && strlen.length <= 20
+                            msg:"用户名长度只能在4-20位字符之间"
                         },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"用户名长度只能在4-20位字符之间")
-                        }
-                    },
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.username).test(str);
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.username).test(char);
+                            },
+                            msg:"用户名只能由中文、英文、数字及\"-\"、\"_\"组成"
                         },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"用户名只能由中文、英文、数字及\"-\"、\"_\"组成")
-
+                        {
+                            level:function (char) {
+                                return !new RegExp(veg.fullNumber).test(char);
+                            },
+                            msg:"用户名不能是纯数字，请重新输入"
                         }
-                    },
-                    fullNumberName:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return !new RegExp(vereg.fullNumber).test(str);
+
+                    ]
+                },
+                {
+                    elem:"#password",
+                    required:"请输入密码",
+                    notice:"6-20位字符，字母，数字和符号请使用两种以上组合",
+                    error:[
+                        {
+                            level:function (char) {
+                                return char.length >= 6 && char.length <= 20
+                            },
+                            msg:"密码长度只能在6-20位字符之间"
                         },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"用户名不能是纯数字，请重新输入")
-
-                        }
-                    }
-                },
-                succeed:function(t){
-                    succeedpass(t)
-
-
-                },
-                initCall:function(t){
-                    restore(t)
-                }
-            },
-            pwd:{
-                elem:"#password3",
-                isInput:!0,
-                isRequired:!0,
-                isNull:function(str){
-                    return (new RegExp(vereg.empty).test(str));
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输入密码")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"6-20位字符，字母，数字和符号请使用两种以上组合")
-
-                },
-                level:{
-                    badLength:  {
-                        isCustom:!1,
-                        verify:function(str){
-                            return str.length >= 6 && str.length <= 20
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.password).test(char);
+                            },
+                            msg:"密码只能由英文、数字及标点符号组成"
                         },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码长度只能在6-20位字符之间")
-                        }
-                    },
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.password).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码只能由英文、数字及标点符号组成")
-                        }
-                    },
-                    simplePwd:{
-                        isCustom:!1,
-                        verify:function(str){
-                            var _weakPwdArray =!0;
-                            for (var i = 0; i < weakPwdArray.length; i++) {
-                                if (weakPwdArray[i] == str) {
-                                    _weakPwdArray = !1;
-                                    break;
+                        {
+                            level:function (char) {
+                                var _weakPwdArray =true;
+                                for (var i = 0; i < weakPwdArray.length; i++) {
+                                    if (weakPwdArray[i] == char) {
+                                        _weakPwdArray = false;
+                                        break;
+                                    }
                                 }
-                            }
-                            return _weakPwdArray;
+                                return _weakPwdArray;
+                            },
+                            msg:"该密码比较简单，有被盗风险，建议您更改为复杂密码"
                         },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"该密码比较简单，有被盗风险，建议您更改为复杂密码")
-                        }
-                    },
-                    fitPwd:{
-                        isCustom:!0,
-                        verifycall: function(t){
+                        {
+                            level:function (char) {
+                                var $OncePassword= $("#OncePassword"),
+                                        _pwdRepeat_val= $OncePassword.val();
 
-                            var $OncePassword= $("#OncePassword3"),
-                                    _pwdRepeat_val= $OncePassword.val(),
-                                    _password_val= $("#password3").val()
-                            if(!new RegExp(vereg.empty).test(_pwdRepeat_val)){
-                                if(_password_val.length === _pwdRepeat_val.length && _password_val === _pwdRepeat_val){
-                                    $OncePassword.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
-                                    $OncePassword.parent().find(".sucess").addClass("dis")
-                                }else{
-                                    errorTipsfnc($OncePassword,"两次密码不正确")
-                                    $OncePassword.parent().find(".sucess").removeClass("dis")
-
+                                if(new RegExp(veg.notempty).test(_pwdRepeat_val)){
+                                    if(char.length === _pwdRepeat_val.length && char === _pwdRepeat_val){
+                                        $OncePassword.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
+                                        $OncePassword.parent().find(".sucess").addClass("dis")
+                                    }else{
+                                        $OncePassword.parent().find(".error").removeClass("tips").addClass("errorTips").html("两次密码不一致");
+                                        $OncePassword.parent().find(".sucess").removeClass("dis");
+                                    }
                                 }
+
+                                return true
                             }
+//                            msg:false
+                        }
+                    ]
+                },
+                {
+                    elem:"#OncePassword",
+                    required:"重复输入密码",
+                    notice:"请再次输入密码",
+                    error:[
+                        {
+                            level:function (char) {
+                                return char.length >= 6 && char.length <= 20
+                            },
+                            msg:"密码长度只能在6-20位字符之间"
+                        },
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.password).test(char);
+                            },
+                            msg:"密码只能由英文、数字及标点符号组成"
+                        },
+                        {
+                            level:function(char){
+                                var _password =$("#password").val();
 
+
+                                if(new RegExp(veg.notempty).test(_password)){
+
+                                    return _password.length === char.length && _password === char
+                                }
+
+                                return true
+
+
+                            },
+                            msg:"两次输入密码不一致"
+                        }
+                    ]
+                },
+                {
+                    elem:"#phone",
+//                    required:false,
+                    notice:"完成验证后请用该手机号码，登录或者找回密码",
+                    error:[
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.mobile).test(char);
+                            },
+                            msg:"手机号码格式有误，请输入正确的手机号"
+                        }
+                    ]
+                },
+                {
+                    elem:"#free",
+                    custom:true,
+                    customcall:function (t,bol) {
+//                        init
+                        t.parent().find(".sucess").removeClass("dis")
+                        t.parent().find(".error").removeClass("errorTips").removeClass("tips").empty()
+                        if(bol){
+                            t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
+                            t.parent().find(".sucess").addClass("dis")
+                        }else{
+                            t.parent().find(".error").removeClass("tips").addClass("errorTips").html("选项有误");
                         }
                     }
-
-                },
-                succeed:function(t){
-                    succeedpass(t)
-                },
-                initCall:function(t){
-                    restore(t)
                 }
-            },
-            pwdRepeat:{
-                elem:"#OncePassword3",
-                isInput:!0,
-                isRequired:!0,
-                isNull:function(str){
-                    var reg_isNull = new RegExp(vereg.empty).test(str);
-                    return (reg_isNull);
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输确认密码")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"请再次输入密码")
-                },
-                level:{
-                    badLength:  {
-                        isCustom:!1,
-                        verify:function(str){
-                            return str.length >= 6 && str.length <= 20
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码长度只能在6-20位字符之间")
-                        }
-                    },
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.password).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"密码只能由英文、数字及标点符号组成")
-                        }
-                    },
-                    fitPwd:{
-                        isCustom:!1,
-                        verify:function(str){
-                            var _password =$("#password3").val();
-                            return _password.length === str.length && _password === str;
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"两次输入密码不一致")
-                        }
-                    }
+            ];
 
-                },
-                succeed:function(t){
-                    succeedpass(t)
-                },
-                initCall:function(t){
-                    restore(t)
-                }
-            },
-            phone: {
-                elem:"#phone3",
-                isInput:!0,
-                isRequired:!1,
-                isNull:function(str){
-                    return (new RegExp(vereg.empty).test(str));
-                },
-                isNullCall:function(t){
-                    errorTipsfnc(t,"请输入手机号码")
-                },
-                onFocusCall:function(t){
-                    onFocusfnc(t,"完成验证后请用该手机号码，登录或者找回密码")
-                },
-                level:{
-                    badFormat:{
-                        isCustom:!1,
-                        verify:function(str){
-                            return new RegExp(vereg.mobile).test(str);
-                        },
-                        verifycall: function(t){
-                            errorTipsfnc(t,"手机号码格式有误，请输入正确的手机号")
-                        }
-                    }
-                },
-                succeed:function(t){
-                    succeedpass(t)
-                },
-                initCall:function(t){
-                    restore(t)
-                }
-            }
-        };
-        var ve_03 = new Validate({
-            config:register3,
-            subClass:"#ve_03_btn",
-            subSucceedCall:function(){
-                alert("成功")
-            },
-            subErrorCall:function(){
-                alert("失败")
-            }
+             var ve_01= new validation({
+                 config:validator,
+                 init:function (t) {
+                     t.parent().find(".sucess").removeClass("dis")
+                     t.parent().find(".error").removeClass("errorTips").removeClass("tips").empty()
+                 },
+                 required:function(t,s){
+                     console.log(s)
+                     t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
+                 },
+                 notice:function (t,s) {
+                     t.parent().find(".error").removeClass("errorTips").addClass("tips").html(s);
+                 },
+                 success:function (t,s) {
+                     t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
+                     t.parent().find(".sucess").addClass("dis")
+                 },
+                 error:function (t,s) {
 
-        });
-        ve_03.init();
-        ve_03.submitCtrl();
-    })
+                     t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
+                 },
+                 sbtBtn:"#ve_01_btn",
+                 sbtSucceed:function(){
+                     alert("成功")
+                 },
+                 sbtError:function(){
+                     alert("失败")
+                 }
+
+             });
+
+            ve_01.init();
+            ve_01.commit()
+
+   })
 
 </script>
+
+
+
+
+
 </body>
 </html>
