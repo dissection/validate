@@ -18,18 +18,21 @@
         var errorbol = {
             pass:true
         };
-        for(var i=0; i< error.length; i++){
-            if(!error[i].level(char)){
-                errorbol.pass= false;
-                errorbol.msg= error[i].msg;
-                break;
+        if(error && error.length > 0 ){
+            for(var i=0; i< error.length; i++){
+                if(!error[i].level(char)){
+                    errorbol.pass= false;
+                    errorbol.msg= error[i].msg;
+                    break;
+                }
             }
         }
+
 
         return errorbol
 
     }
-    
+
     var Validation = function(options){
         this.option =options;
         this.option.vdn="vdn-pass";
@@ -40,7 +43,7 @@
     };
     Validation.prototype = {
         constructor:Validation,
-        init:function(){
+        listen:function(){
             var _this=this,
                 _op = this.option,
                 Valconfig=this.option.config;
@@ -49,24 +52,26 @@
             $.each(Valconfig,function(i , item){
                 if(!item.custom){
                     $(item.elem).on("focus",function () {
+                        console.log("focus")
                         _op.init($(this));
-                        _op.notice($(this),item.notice)
+                        _op.notice && _op.notice($(this),item.notice)
 
                     }).on("blur",function () {
+                        console.log("blur")
                         var charval = $(this).val(),geterror;
 
-                            if(_this.notempty.test(charval)){
-                                geterror=errorinfo(charval,item.error);
+                        if(_this.notempty.test(charval)){
+                            geterror=errorinfo(charval,item.error);
 
-                                    if(geterror.pass){
-                                        _op.success($(this))
-                                    }else{
-                                        (geterror.msg == false || geterror.msg == undefined) ? void(0) : _op.error($(this),geterror.msg)
-                                    }
-
+                            if(geterror.pass){
+                                _op.success($(this))
                             }else{
-                                _op.init($(this))
+                                (geterror.msg == false || geterror.msg == undefined) ? void(0) : _op.error($(this),geterror.msg)
                             }
+
+                        }else{
+                            _op.init($(this))
+                        }
 
 
                     })
@@ -81,34 +86,36 @@
                 var canSubmit = true;
                 $.each(Valconfig,function (i , item) {
                     var itemElem = $(item.elem),
-                    charval = itemElem.val(),geterror;
+                        charval = itemElem.val(),geterror;
 
                     if(item.required == true || typeof item.required == "string"){
 
                         if(item.custom){
                             if($(item.elem).attr(_op.vdn) != "true"){
+                                item.customcall(itemElem,false);
                                 canSubmit = false;
-                                item.customcall(itemElem,false)
+                                return false
                             }else{
                                 item.customcall(itemElem,true)
                             }
                         }else{
                             if(_this.notempty.test(charval)){
                                 geterror = errorinfo(charval,item.error);
+                                console.log(geterror)
                                 if(geterror.pass){
                                     _op.success(itemElem)
                                 }else{
 
-
-                                    canSubmit = false;
                                     _op.error(itemElem,geterror.msg)
+                                    canSubmit = false;
+                                    return false
                                 }
 
                             }else{
 
-
-                                canSubmit = false;
                                 _op.required(itemElem,item.required)
+                                canSubmit = false;
+                                return false
                             }
 
                         }
@@ -116,8 +123,11 @@
                     }else{
                         if(item.custom){
                             if($(item.elem).attr(_op.vdn) != "true"){
-                                canSubmit = false;
+
                                 item.customcall(itemElem,false)
+                                canSubmit = false;
+                                return false
+
                             }else{
                                 item.customcall(itemElem,true)
                             }
@@ -130,6 +140,7 @@
 
                                     _op.error(itemElem, geterror.msg)
                                     canSubmit = false;
+                                    return false
                                 }
                             }
                         }
