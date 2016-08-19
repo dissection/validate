@@ -35,10 +35,10 @@
 
     var Validation = function(options){
         this.option =options;
-        this.option.vdn="vdn-pass";
+        this.option.vdn="data-vdn";
         this.option.config = CompletionAllCustom(this.option.config);
         this.notempty=/^\S+$/;
-        console.log(this.option.config)
+        // console.log(this.option.config)
 
     };
     Validation.prototype = {
@@ -52,12 +52,12 @@
             $.each(Valconfig,function(i , item){
                 if(!item.custom){
                     $(item.elem).on("focus",function () {
-                        console.log("focus")
+                        // console.log("focus")
                         _op.init($(this));
                         _op.notice && _op.notice($(this),item.notice)
 
                     }).on("blur",function () {
-                        console.log("blur")
+                        // console.log("blur")
                         var charval = $(this).val(),geterror;
 
                         if(_this.notempty.test(charval)){
@@ -92,16 +92,16 @@
 
                         if(item.custom){
                             if($(item.elem).attr(_op.vdn) != "true"){
-                                item.customcall(itemElem,false);
+                                item.customcall && item.customcall(itemElem,false)
                                 canSubmit = false;
                                 return false
                             }else{
-                                item.customcall(itemElem,true)
+                                item.customcall && item.customcall(itemElem,true)
                             }
                         }else{
                             if(_this.notempty.test(charval)){
                                 geterror = errorinfo(charval,item.error);
-                                console.log(geterror)
+                                // console.log(geterror)
                                 if(geterror.pass){
                                     _op.success(itemElem)
                                 }else{
@@ -124,12 +124,12 @@
                         if(item.custom){
                             if($(item.elem).attr(_op.vdn) != "true"){
 
-                                item.customcall(itemElem,false)
+                                item.customcall && item.customcall(itemElem,false)
                                 canSubmit = false;
                                 return false
 
                             }else{
-                                item.customcall(itemElem,true)
+                                item.customcall && item.customcall(itemElem,true)
                             }
                         }else {
                             if (_this.notempty.test(charval)) {
@@ -147,7 +147,7 @@
                     }
 
                 });
-                console.log(canSubmit)
+                // console.log(canSubmit)
                 if(canSubmit){
                     _op.sbtSucceed()
                 }else{

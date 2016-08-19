@@ -34,14 +34,14 @@
         <span class="error "></span>
     </div>
     <div class="form-group">
-        <label ><i>*</i> 手机号码</label>
+        <label >手机号码</label>
         <input type="text" id="phone" class="itext forange">
         <span class="sucess"><img src="img/sucess.png"></span>
         <span class="error "></span>
     </div>
     <div class="form-group">
         <label ><i>*</i> 自定义项</label>
-        <select id="free" vdn-pass="true" >
+        <select id="free" vdn="true" >
             <option>true</option>
             <option>false</option>
         </select>
@@ -58,7 +58,7 @@
        
        $("#free").on("change",function () {
            console.log($(this).val())
-           $(this).attr("vdn-pass",$(this).val())
+           $(this).attr("data-vdn",$(this).val())
        });
 
        
