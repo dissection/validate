@@ -1,10 +1,11 @@
 /**
  * Created by Chen on 16/2/29.
- *  Omnipotent validation 2.0 小而强壮
+ *  Omnipotent validation 2.0.x 小而强壮
  */
+
 !function ($,win ,undefined) {
     var Ovd={
-        v:"2.0.2"
+        v:"2.0.3"
     };
     //补全custom
     function CompletionAllCustom(cfg) {
@@ -35,18 +36,15 @@
         return errorbol
 
     }
-
     Ovd.create=function (opts) {
         return new Validation(opts)
     };
-
-
     var Validation = function(options){
         this.option =options;
         this.option.vdn="data-vdn";
         this.option.config = CompletionAllCustom(this.option.config);
         this.notempty=/^\S+$/;
-        // console.log(this.option.config)
+        console.log(this.option.config)
 
     };
     Validation.prototype = {
@@ -60,12 +58,12 @@
             $.each(Valconfig,function(i , item){
                 if(!item.custom){
                     $(item.elem).on("focus",function () {
-                        // console.log("focus")
+                        console.log("focus")
                         _op.init($(this));
                         _op.notice && _op.notice($(this),item.notice)
 
                     }).on("blur",function () {
-                        // console.log("blur")
+                        console.log("blur")
                         var charval = $(this).val(),geterror;
 
                         if(_this.notempty.test(charval)){
@@ -99,17 +97,26 @@
                     if(item.required == true || typeof item.required == "string"){
 
                         if(item.custom){
+                            //一些极端的情况
                             if($(item.elem).attr(_op.vdn) != "true"){
-                                item.customcall && item.customcall(itemElem,false)
-                                canSubmit = false;
-                                return false
+                                //如果存在 customcall 回调， 那么查看回调的返回值来决定 是否通过
+                                if(typeof item.customcall == "function"){
+                                    canSubmit = item.customcall(itemElem,false);
+                                }else{
+                                    canSubmit = false;
+                                }
+                                if(!canSubmit){
+                                    return false
+                                }
                             }else{
-                                item.customcall && item.customcall(itemElem,true)
+                                if(item.customcall == "function"){
+                                    item.customcall(itemElem,true);
+                                }
                             }
                         }else{
                             if(_this.notempty.test(charval)){
                                 geterror = errorinfo(charval,item.error);
-                                // console.log(geterror)
+                                console.log(geterror)
                                 if(geterror.pass){
                                     _op.success(itemElem)
                                 }else{
@@ -130,15 +137,26 @@
 
                     }else{
                         if(item.custom){
+
                             if($(item.elem).attr(_op.vdn) != "true"){
-
-                                item.customcall && item.customcall(itemElem,false)
-                                canSubmit = false;
-                                return false
-
+                                console.log(typeof item.customcall == "function")
+                                if(typeof item.customcall == "function"){
+                                    canSubmit = item.customcall(itemElem,false);
+                                }else{
+                                    canSubmit = false;
+                                }
+                                if(!canSubmit){
+                                    return false
+                                }
                             }else{
-                                item.customcall && item.customcall(itemElem,true)
+
+                                if(item.customcall == "function"){
+                                    item.customcall(itemElem,true);
+                                }
                             }
+
+
+
                         }else {
                             if (_this.notempty.test(charval)) {
                                 geterror = errorinfo(charval, item.error);
@@ -155,7 +173,7 @@
                     }
 
                 });
-                // console.log(canSubmit)
+                console.log(canSubmit)
                 if(canSubmit){
                     _op.sbtSucceed()
                 }else{
@@ -166,6 +184,5 @@
         }
 
     };
-
-   return win.Ovd = Ovd;
+    return win.Ovd = Ovd;
 }(jQuery,window);
