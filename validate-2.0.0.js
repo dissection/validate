@@ -1,8 +1,11 @@
 /**
  * Created by Chen on 16/2/29.
- *  Validation 2.0 小而强壮
+ *  Omnipotent validation 2.0 小而强壮
  */
 !function ($,win ,undefined) {
+    var Ovd={
+        v:"2.0.2"
+    };
     //补全custom
     function CompletionAllCustom(cfg) {
         for(var i=0; i< cfg.length; i++){
@@ -32,6 +35,11 @@
         return errorbol
 
     }
+
+    Ovd.create=function (opts) {
+        return new Validation(opts)
+    };
+
 
     var Validation = function(options){
         this.option =options;
@@ -158,5 +166,6 @@
         }
 
     };
-    win.validation=Validation;
+
+   return win.Ovd = Ovd;
 }(jQuery,window);
