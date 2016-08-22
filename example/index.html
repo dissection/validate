@@ -7,7 +7,7 @@
     <link href="main.css" rel="stylesheet">
     <script src="../jquery.js"></script>
     <script src="../validateRegExp.js"></script>
-    <script src="../validate-2.0.0.js"></script>
+    <!--<script src="../validate.js"></script>-->
     <script src="../src/validate.min.js"></script>
 </head>
 
@@ -42,7 +42,7 @@
     </div>
     <div class="form-group">
         <label ><i>*</i> 自定义项</label>
-        <select id="free" vdn="true" >
+        <select id="free" data-vdn="true" >
             <option>true</option>
             <option>false</option>
         </select>
@@ -205,9 +205,12 @@
                         if(bol){
                             t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
                             t.parent().find(".sucess").addClass("dis")
+
                         }else{
                             t.parent().find(".error").removeClass("tips").addClass("errorTips").html("选项有误");
                         }
+
+                        return bol
                     }
                 }
             ];
@@ -232,19 +235,24 @@
                  error:function (t,s) {
 
                      t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
-                 },
-                 sbtBtn:"#ve_01_btn",
-                 sbtSucceed:function(){
-                     alert("成功")
-                 },
-                 sbtError:function(){
-                     alert("失败")
                  }
+
 
              });
 
             ve_01.listen();
-            ve_01.commit()
+
+            $("#ve_01_btn").on("click",function () {
+                ve_01.commit({
+                    sbtSucceed:function(){
+                        alert("成功1")
+                    },
+                    sbtError:function(){
+                        alert("失败1")
+                    }
+                })
+
+            })
 
    })
 
