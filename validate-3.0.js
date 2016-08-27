@@ -1,176 +1,180 @@
 /**
  * Created by Chen on 16/2/29.
- *  Omnipotent validation 2.0.x 小而强壮
+ *  Omnipotent validation 3.0.x 小而强壮
  */
 
-!function ($,win ,undefined) {
+!function (win,$,undefined) {
+
     var Ovd={
-        v:"2.0.3"
+        v:"3.0.0",
+        reg:{
+            notempty: "^\\S+$"
+        }
+
     };
-    //补全custom
-    function CompletionAllCustom(cfg) {
+
+    function createObject( proto ) {
+        var f;
+
+        if ( Object.create ) {
+            return Object.create( proto );
+        } else {
+            f = function() {};
+            f.prototype = proto;
+            return new f();
+        }
+    }
+
+    //转换符合函数
+    function SubItem(opt) {
+        var f = createObject( proto )
+
+        return
+    }
+    
+    /*
+    * 补全*/
+    Ovd.MakeQueue =function(opts) {
+
+        var cfg = opts.config;
+
         for(var i=0; i< cfg.length; i++){
-            if(cfg[i].custom == undefined || cfg[i].custom == false){
-                cfg[i]["custom"] = false;
+            //添加自定义
+            if(cfg[i].custom == undefined){
+                cfg[i].$custom =false
             }
-        }
-        return cfg
-    }
 
-    //error 错误
-    function errorinfo(char,error) {
-        var errorbol = {
-            pass:true
-        };
-        if(error && error.length > 0 ){
-            for(var i=0; i< error.length; i++){
-                if(!error[i].level(char)){
-                    errorbol.pass= false;
-                    errorbol.msg= error[i].msg;
-                    break;
-                }
-            }
-        }
+            if(typeof cfg[i].required == "string"){
+                cfg[i].requiredfn = {
+                    level:function (char) {
+                        return new RegExp(Ovd.reg.notempty).test(char)
+                    },
+                    msg:cfg[i].required
+                };
+                cfg[i].$required = true
 
-
-        return errorbol
-
-    }
-    Ovd.create=function (opts) {
-        return new Validation(opts)
-    };
-    var Validation = function(options){
-        this.option =options;
-        this.option.vdn="data-vdn";
-        this.option.config = CompletionAllCustom(this.option.config);
-        this.notempty=/^\S+$/;
-        // console.log(this.option.config)
-
-    };
-    Validation.prototype = {
-        constructor:Validation,
-        listen:function(){
-            var _this=this,
-                _op = this.option,
-                Valconfig=this.option.config;
-
-
-            $.each(Valconfig,function(i , item){
-                if(!item.custom){
-                    $(item.elem).on("focus",function () {
-                        // console.log("focus")
-                        _op.init && _op.init($(this));
-                        _op.notice && _op.notice($(this),item.notice)
-
-                    }).on("blur",function () {
-                        // console.log("blur")
-                        var charval = $(this).val(),geterror;
-
-                        if(_this.notempty.test(charval)){
-                            geterror=errorinfo(charval,item.error);
-
-                            if(geterror.pass){
-                                _op.success && _op.success($(this))
-                            }else{
-                                (geterror.msg == false || geterror.msg == undefined) ? void(0) : _op.error($(this),geterror.msg)
-                            }
-
-                        }else{
-                            _op.init &&  _op.init($(this))
-                        }
-
-
-                    })
-                }
-            });
-        },
-        commit:function(opt){
-            var _this=this,
-                _op = this.option,
-                Valconfig=this.option.config;
-            var canSubmit = true,dataVdn;
-            $.each(Valconfig,function (i , item) {
-                var itemElem = $(item.elem),
-                    charval = itemElem.val(),geterror;
-
-                if(item.required == true || typeof item.required == "string"){
-
-                    if(item.custom){
-                        //一些极端的情况
-                        dataVdn = itemElem.attr(_op.vdn) == "true" ? true :false;
-                        if(typeof item.customcall == "function"){
-
-                            canSubmit =  item.customcall(itemElem,dataVdn);
-                        }else{
-
-                            canSubmit=dataVdn
-                        }
-                        console.log(canSubmit)
-                        if(!canSubmit){
-                            return false
-                        }
-                    }else{
-                        if(_this.notempty.test(charval)){
-                            geterror = errorinfo(charval,item.error);
-                            // console.log(geterror)
-                            if(geterror.pass){
-                                _op.success && _op.success(itemElem)
-                            }else{
-
-                                _op.error(itemElem,geterror.msg)
-                                canSubmit = false;
-                                return false
-                            }
-
-                        }else{
-                            //您设置了必填选项 这里必须 有required 函数
-                            typeof _op.required != "function" ? $.error( item.elem+"元素:设置了required参数=>required方法必须存在") :_op.required(itemElem,item.required)
-                            canSubmit = false;
-                            return false
-                        }
-
-                    }
-
-                }else{
-                    if(item.custom){
-                        dataVdn = itemElem.attr(_op.vdn) == "true" ? true :false;
-                        if(typeof item.customcall == "function"){
-                            
-                            canSubmit =  item.customcall(itemElem,dataVdn);
-                        }else{
-
-                            canSubmit=dataVdn
-                        }
-                        console.log(canSubmit)
-                        if(!canSubmit){
-                            return false
-                        }
-
-                    }else {
-                        if (_this.notempty.test(charval)) {
-                            geterror = errorinfo(charval, item.error);
-                            if (geterror.pass) {
-                                _op.success && _op.success(itemElem)
-                            } else {
-
-                                _op.error(itemElem, geterror.msg)
-                                canSubmit = false;
-                                return false
-                            }
-                        }
-                    }
-                }
-
-            });
-            // console.log(canSubmit)
-            if(canSubmit){
-                opt.sbtSucceed && opt.sbtSucceed()
             }else{
-                opt.sbtError && opt.sbtError()
+                cfg[i].$required = false
+            }
+
+
+            if(typeof cfg[i].notice == "string"){
+                cfg[i].$notice = true
+            }else {
+                cfg[i].$notice = false
+            }
+
+            if(cfg[i].error == undefined){
+                cfg[i].$error = true
+            }
+
+            if(cfg[i].init == undefined){
+                 cfg[i].$init = true
+            }
+
+            if( cfg[i].success == undefined){
+                cfg[i].$success = true
+            }
+
+            if(cfg[i].error == undefined){
+                cfg[i].$error = false
+            }else {
+                cfg[i].$error = true
             }
 
         }
 
+        return opts
     };
+
+    // function MakerequiredFn(mess) {
+    //         var mes =mess
+    //     return function (b) {
+    //         var dtd = $.Deferred();
+    //         var mess=mes
+    //         console.log(dtd)
+    //         if(b){
+    //             dtd.resolve();
+    //         }else{
+    //             dtd.reject();
+    //         }
+    //         return dtd.promise();
+    //     }
+    // }
+
+
+    Ovd.create =function (opts) {
+           var opts = Ovd.MakeQueue(opts)
+
+
+            console.log(opts)
+        return new Validate(opts)
+    };
+
+
+
+    var Validate = function(opts){
+        var _this =this;
+        var _cfg=opts.config;
+        this.opts = opts;
+        this.topics = {};
+    console.log(_cfg)
+
+        this.Topic = function( id ) {
+            var callbacks,
+                method,
+                topic = id && _this.topics[ id ];
+
+            if ( !topic ) {
+                callbacks = $.Callbacks();
+                topic = {
+                    publish: callbacks.fire,
+                    subscribe: callbacks.add,
+                    unsubscribe: callbacks.remove
+                };
+                if ( id ) {
+                    _this.topics[ id ] = topic;
+                }
+            }
+            return topic;
+        };
+        this.DeferredFactory=function (fn) {
+
+            var dtd=$.Deferred();
+
+            if(fn()){
+                dtd.resolve();
+            }else {
+                dtd.reject();
+            }
+            return dtd.promise();
+
+        }
+
+        //判断添加应该存在的函数
+        for(var i=0; i<_cfg.length; i++){
+
+            if(_cfg[i].$init && opts.init){
+                this.Topic(_cfg[i].elem).subscribe( opts.init )
+            }
+
+        }
+        console.log( this.topics )
+
+    };
+
+    Validate.prototype.listen=function () {
+        var _this =this,_opts=this.opts,_cfg=_opts.config
+
+        for(var i=0; i<_cfg.length; i++){
+
+            _this.Topic(_cfg[i].elem).publish("12123")
+
+        }
+
+
+    };
+
     return win.Ovd = Ovd;
-}(jQuery,window);
+
+}(window,jQuery)

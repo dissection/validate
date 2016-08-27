@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>validate</title>
+    <link href="../base.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+    <script src="../jquery.js"></script>
+    <script src="../validateRegExp.js"></script>
+    <script src="../validate-3.0.js"></script>
+</head>
+
+<body>
+<div class="tit mb20">
+    <h3>验证</h3>
+</div>
+<div class="ve_01">
+    <div class="form-group">
+        <label ><i>*</i> 用户名</label>
+        <input type="text" id="username"  class="itext forange" />
+        <span class="sucess"><img src="img/sucess.png"></span>
+        <span class="error "></span>
+    </div>
+    <div class="form-group">
+        <label ><i>*</i> 密码</label>
+        <input type="text" id="password"  class="itext forange">
+        <span class="sucess"><img src="img/sucess.png"></span>
+        <span class="error "></span>
+    </div>
+    <div class="form-group">
+        <label ><i>*</i> 确认密码</label>
+        <input type="text"  id="OncePassword" class="itext forange">
+        <span class="sucess"><img src="img/sucess.png"></span>
+        <span class="error "></span>
+    </div>
+    <div class="form-group">
+        <label >手机号码</label>
+        <input type="text" id="phone" class="itext forange">
+        <span class="sucess"><img src="img/sucess.png"></span>
+        <span class="error "></span>
+    </div>
+    <div class="form-group">
+        <label ><i>*</i> 自定义项</label>
+        <select id="free" data-vdn="true" >
+            <option>true</option>
+            <option>false</option>
+        </select>
+        <span class="sucess"><img src="img/sucess.png"></span>
+        <span class="error "></span>
+    </div>
+    <div id="ve_01_btn" class="btn-md2" style="margin-left: 117px;">
+        <a>提交</a>
+    </div>
+</div>
+<script>
+
+   $(function () {
+       
+       $("#free").on("change",function () {
+           console.log($(this).val())
+           $(this).attr("data-vdn",$(this).val())
+       });
+
+       
+       var weakPwdArray = ["123456", "123456789", "111111", "5201314", "12345678", "123123", "password", "1314520", "123321", "7758521", "1234567", "5211314", "666666", "520520", "woaini", "520131", "11111111", "888888", "hotmail.com", "112233", "123654", "654321", "1234567890", "a123456", "88888888", "163.com", "000000", "yahoo.com.cn", "sohu.com", "yahoo.cn", "111222tianya", "163.COM", "tom.com", "139.com", "wangyut2", "pp.com", "yahoo.com", "147258369", "123123123", "147258", "987654321", "100200", "zxcvbnm", "123456a", "521521", "7758258", "111222", "110110", "1314521", "11111111", "12345678", "a321654", "111111", "123123", "5201314", "00000000", "q123456", "123123123", "aaaaaa", "a123456789", "qq123456", "11112222", "woaini1314", "a123123", "a111111", "123321", "a5201314", "z123456", "liuchang", "a000000", "1314520", "asd123", "88888888", "1234567890", "7758521", "1234567", "woaini520", "147258369", "123456789a", "woaini123", "q1q1q1q1", "a12345678", "qwe123", "123456q", "121212", "asdasd", "999999", "1111111", "123698745", "137900", "159357", "iloveyou", "222222", "31415926", "123456", "111111", "123456789", "123123", "9958123", "woaini521", "5201314", "18n28n24a5", "abc123", "password", "123qwe", "123456789", "12345678", "11111111", "dearbook", "00000000", "123123123", "1234567890", "88888888", "111111111", "147258369", "987654321", "aaaaaaaa", "1111111111", "66666666", "a123456789", "11223344", "1qaz2wsx", "xiazhili", "789456123", "password", "87654321", "qqqqqqqq", "000000000", "qwertyuiop", "qq123456", "iloveyou", "31415926", "12344321", "0000000000", "asdfghjkl", "1q2w3e4r", "123456abc", "0123456789", "123654789", "12121212", "qazwsxedc", "abcd1234", "12341234", "110110110", "asdasdasd", "123456", "22222222", "123321123", "abc123456", "a12345678", "123456123", "a1234567", "1234qwer", "qwertyui", "123456789a", "qq.com", "369369", "163.com", "ohwe1zvq", "xiekai1121", "19860210", "1984130", "81251310", "502058", "162534", "690929", "601445", "1814325", "as1230", "zz123456", "280213676", "198773", "4861111", "328658", "19890608", "198428", "880126", "6516415", "111213", "195561", "780525", "6586123", "caonima99", "168816", "123654987", "qq776491", "hahabaobao", "198541", "540707", "leqing123", "5403693", "123456", "123456789", "111111", "5201314", "123123", "12345678", "1314520", "123321", "7758521", "1234567", "5211314", "520520", "woaini", "520131", "666666", "RAND#a#8", "hotmail.com", "112233", "123654", "888888", "654321", "1234567890", "a123456"];
+
+       var errorNote=function(t,s){
+               t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
+           };
+            var validator =[
+                {
+                    elem:"#username",
+                    required:"请输入用户名请输入用户名",
+                    notice:"4-20位字符,支持汉字、字母、数字及\"-\"、\"_\"组合",
+                    error:[
+                        {
+                            level:function (char) {
+                                var strlen = char.replace(/[^\x00-\xff]/g, "**")
+                                return strlen.length >= 4 && strlen.length <= 20
+                            },
+                            msg:"用户名长度只能在4-20位字符之间"
+                        },
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.username).test(char);
+                            },
+                            msg:"用户名只能由中文、英文、数字及\"-\"、\"_\"组成"
+                        },
+                        {
+                            level:function (char) {
+                                return !new RegExp(veg.fullNumber).test(char);
+                            },
+                            msg:"用户名不能是纯数字，请重新输入"
+                        }
+
+                    ]
+                },
+                {
+                    elem:"#password",
+                    required:"请输入密码",
+                    notice:"6-20位字符，字母，数字和符号请使用两种以上组合",
+                    error:[
+                        {
+                            level:function (char) {
+                                return char.length >= 6 && char.length <= 20
+                            },
+                            msg:"密码长度只能在6-20位字符之间"
+                        },
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.password).test(char);
+                            },
+                            msg:"密码只能由英文、数字及标点符号组成"
+                        },
+                        {
+                            level:function (char) {
+                                var _weakPwdArray =true;
+                                for (var i = 0; i < weakPwdArray.length; i++) {
+                                    if (weakPwdArray[i] == char) {
+                                        _weakPwdArray = false;
+                                        break;
+                                    }
+                                }
+                                return _weakPwdArray;
+                            },
+                            msg:"该密码比较简单，有被盗风险，建议您更改为复杂密码"
+                        },
+                        {
+                            level:function (char) {
+                                var $OncePassword= $("#OncePassword"),
+                                        _pwdRepeat_val= $OncePassword.val();
+
+                                if(new RegExp(veg.notempty).test(_pwdRepeat_val)){
+                                    if(char.length === _pwdRepeat_val.length && char === _pwdRepeat_val){
+                                        $OncePassword.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
+                                        $OncePassword.parent().find(".sucess").addClass("dis")
+                                    }else{
+                                        $OncePassword.parent().find(".error").removeClass("tips").addClass("errorTips").html("两次密码不一致");
+                                        $OncePassword.parent().find(".sucess").removeClass("dis");
+                                    }
+                                }
+
+                                return true
+                            }
+//                            msg:false
+                        }
+                    ]
+                },
+                {
+                    elem:"#OncePassword",
+                    required:"重复输入密码",
+                    notice:"请再次输入密码",
+                    error:[
+                        {
+                            level:function (char) {
+                                return char.length >= 6 && char.length <= 20
+                            },
+                            msg:"密码长度只能在6-20位字符之间"
+                        },
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.password).test(char);
+                            },
+                            msg:"密码只能由英文、数字及标点符号组成"
+                        },
+                        {
+                            level:function(char){
+                                var _password =$("#password").val();
+
+
+                                if(new RegExp(veg.notempty).test(_password)){
+
+                                    return _password.length === char.length && _password === char
+                                }
+
+                                return true
+
+
+                            },
+                            msg:"两次输入密码不一致"
+                        }
+                    ]
+                },
+                {
+                    elem:"#phone",
+//                    required:false,
+                    notice:"完成验证后请用该手机号码，登录或者找回密码",
+                    error:[
+                        {
+                            level:function (char) {
+                                return new RegExp(veg.mobile).test(char);
+                            },
+                            msg:"手机号码格式有误，请输入正确的手机号"
+                        }
+                    ]
+                },
+                {
+                    elem:"#free",
+                    custom:true,
+                    customerror:function (t,bol) {
+//                        init
+                        t.parent().find(".sucess").removeClass("dis")
+                        t.parent().find(".error").removeClass("errorTips").removeClass("tips").empty()
+                        if(bol){
+                            t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
+                            t.parent().find(".sucess").addClass("dis")
+
+                        }else{
+                            t.parent().find(".error").removeClass("tips").addClass("errorTips").html("选项有误");
+                        }
+
+                        return bol
+                    }
+                }
+            ];
+
+             var ve_01= Ovd.create({
+                 config:validator,
+                 init:function (t) {
+                     console.log("init")
+                 },
+                 required:function(t,s){
+                     console.log("required")
+                 },
+                 notice:function (t,s) {
+                     console.log("notice")
+                 },
+                 success:function (t,s) {
+                     console.log("success")
+                 },
+                 error:function (t,s) {
+
+                     console.log("error")
+                 }
+
+
+             });
+
+
+       ve_01.listen();
+
+
+   })
+
+</script>
+
+<script>
+
+    /*function MakerequiredFn(b) {
+        var dtd=$.Deferred();
+        var mess=mess
+        if(b){
+            dtd.resolve();
+        }else{
+            dtd.reject();
+        }
+
+        return dtd.promise();
+    }
+    $.when(MakerequiredFn(false)).done(function () {
+        alert("ok")
+    }).fail(function () {
+        alert("no")
+    })*/
+
+</script>
+
+
+
+</body>
+</html>
