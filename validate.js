@@ -43,7 +43,7 @@
         this.option =options;
         this.option.vdn="data-vdn";
         this.option.config = CompletionAllCustom(this.option.config);
-        this.notempty=/^\S+$/;
+        this.empty=/^\s{0}$/;
         // console.log(this.option.config)
 
     };
@@ -65,8 +65,12 @@
                     }).on("blur",function () {
                         // console.log("blur")
                         var charval = $(this).val(),geterror;
+                        console.log(_this.empty.test(charval))
+                        if(_this.empty.test(charval)){
 
-                        if(_this.notempty.test(charval)){
+                            _op.init &&  _op.init($(this))
+                        }else{
+
                             geterror=errorinfo(charval,item.error);
 
                             if(geterror.pass){
@@ -75,8 +79,6 @@
                                 (geterror.msg == false || geterror.msg == undefined) ? void(0) : _op.error($(this),geterror.msg)
                             }
 
-                        }else{
-                            _op.init &&  _op.init($(this))
                         }
 
 
@@ -96,8 +98,10 @@
                 if(item.required == true || typeof item.required == "string"){
 
                     if(item.custom){
+                        console.log(itemElem.attr(_op.vdn))
                         //一些极端的情况
                         dataVdn = itemElem.attr(_op.vdn) == "true" ? true :false;
+
                         if(typeof item.customcall == "function"){
 
                             canSubmit =  item.customcall(itemElem,dataVdn);
@@ -110,7 +114,13 @@
                             return false
                         }
                     }else{
-                        if(_this.notempty.test(charval)){
+                        if(_this.empty.test(charval)){
+                            //您设置了必填选项 这里必须 有required 函数
+                            typeof _op.required != "function" ? $.error( item.elem+"元素:设置了required参数=>required方法必须存在") :_op.required(itemElem,item.required)
+                            canSubmit = false;
+                            return false
+
+                        }else{
                             geterror = errorinfo(charval,item.error);
                             // console.log(geterror)
                             if(geterror.pass){
@@ -121,12 +131,6 @@
                                 canSubmit = false;
                                 return false
                             }
-
-                        }else{
-                            //您设置了必填选项 这里必须 有required 函数
-                            typeof _op.required != "function" ? $.error( item.elem+"元素:设置了required参数=>required方法必须存在") :_op.required(itemElem,item.required)
-                            canSubmit = false;
-                            return false
                         }
 
                     }
@@ -135,7 +139,7 @@
                     if(item.custom){
                         dataVdn = itemElem.attr(_op.vdn) == "true" ? true :false;
                         if(typeof item.customcall == "function"){
-                            
+
                             canSubmit =  item.customcall(itemElem,dataVdn);
                         }else{
 
@@ -147,7 +151,7 @@
                         }
 
                     }else {
-                        if (_this.notempty.test(charval)) {
+                        if (!_this.empty.test(charval)) {
                             geterror = errorinfo(charval, item.error);
                             if (geterror.pass) {
                                 _op.success && _op.success(itemElem)
