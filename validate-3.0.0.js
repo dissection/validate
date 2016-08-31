@@ -116,7 +116,8 @@
                             item.$state = !item.$required;
                             _opts.error && _opts.error(itemElem,item.required)
                         }else {
-                            _this.parsers(item,$(this).val(),0);
+
+                            _this.parsers(item,itemElem.val(),0);
                         }
                     }
 
@@ -158,12 +159,13 @@
 
                     dtd(itemErr[increase].level(char))
                     .done(function () {
+                        console.log(increase)
                         _this.parsers(item,char,++increase)
                     }).fail(function () {
                         if(item.$state){
                             item.$state =false;
-                            _opts.error && _opts.error($(item.elem),itemErr[increase].msg)
                         }
+                        _opts.error && _opts.error($(item.elem),itemErr[increase].msg)
                     })
 
                 }
@@ -171,12 +173,19 @@
 
 
         };
+        Validate.prototype.updateState = function (elem,state) {
+            var _this=this,
+                _opts = this.opts,
+                _cfg=_opts.config;
 
+            for(var i=0; i<_cfg.length; i++){
+                if(_cfg[i].elem == elem){
+                    _cfg[i].$state =state
+                }
+            }
+
+            console.log(_cfg)
+        };
         return win.Ovd = Ovd;
     }(jQuery , window);
 
-
-
-
-
-    // parsers(arrError[i++])
