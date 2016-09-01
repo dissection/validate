@@ -63,7 +63,7 @@
            if($(this).val() == "true"){
                ve_01.setState('#free',true)
            }else {
-               ve_01.setState('#free',false)
+               ve_01.setState('#free',false,1)
            }
 
        });
@@ -242,7 +242,12 @@
                 {
                     elem:"#free",
                     required:true,
-                    custom:true
+                    custom:true,
+                    error:[
+                            {msg:"这里必须设置 不能为空"},
+                            {msg:"格式不正确"},
+                            {msg:"您必须上传两张"}
+                    ]
                 }
             ];
 
