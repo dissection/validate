@@ -8,3 +8,10 @@ gulp.task('js', function() {
         .pipe(uglify())
         .pipe(gulp.dest('src'));
 });
+
+gulp.task('js3', function() {
+    return gulp.src("./validate-3.0.0.js")
+        .pipe(rename({basename: "validate-3.0.0",suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest('src'));
+});

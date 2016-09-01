@@ -111,8 +111,8 @@
 
             if (!cfg[i].custom) {
                 cfg[i].custom = false
-            }else{
-                cfg[i].$cerr=0
+            } else {
+                cfg[i].$cerr = 0
             }
 
 
@@ -196,26 +196,26 @@
                 charval = itemElem.val();
             if (!item.custom) {
 
-                    if (new RegExp(Ovd.reg.empty).test(charval)) {
-                        item.$state = !item.$required;
-                        _opts.init && _opts.init(itemElem);
-                        if (item.$required) {
-                            _opts.error && _opts.error(itemElem, item.required)
-                        }
-
-                    } else {
-
-                        _this.parsers(item, itemElem.val(), 0);
+                if (new RegExp(Ovd.reg.empty).test(charval)) {
+                    item.$state = !item.$required;
+                    _opts.init && _opts.init(itemElem);
+                    if (item.$required) {
+                        _opts.error && _opts.error(itemElem, item.required)
                     }
 
-            }else {
-                if(item.$state){
-                        _opts.success && _opts.success(itemElem)
+                } else {
 
-                }else {
-                    if(item.$cerr > -1){
+                    _this.parsers(item, itemElem.val(), 0);
+                }
+
+            } else {
+                if (item.$state) {
+                    _opts.success && _opts.success(itemElem)
+
+                } else {
+                    if (item.$cerr > -1) {
                         _opts.error && _opts.error(itemElem, item.error[item.$cerr].msg)
-                    }else {
+                    } else {
                         $.error('请设置报错项')
                     }
                 }
@@ -269,7 +269,7 @@
      * @param elem
      * @param state
      */
-    Validate.prototype.setState = function (elem, state,cerr) {
+    Validate.prototype.setState = function (elem, state, cerr) {
         var _cfg = this.opts.config;
         var cerr = cerr || -1
         for (var i = 0; i < _cfg.length; i++) {
@@ -277,9 +277,9 @@
 
                 _cfg[i].$state = state
 
-                if(_cfg[i].custom){
-                    _cfg[i].$cerr=cerr
-                }else {
+                if (_cfg[i].custom) {
+                    _cfg[i].$cerr = cerr
+                } else {
                     $.error("指定报错项,必须是自定义列")
                 }
 
