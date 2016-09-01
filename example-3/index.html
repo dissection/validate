@@ -6,7 +6,7 @@
     <link href="../base.css" rel="stylesheet">
     <link href="main.css" rel="stylesheet">
     <script src="../jquery.js"></script>
-    <!--<script src="../validateRegExp.js"></script>-->
+    <script src="../validateRegExp.js"></script>
     <script src="../validate-3.0.0.js"></script>
 </head>
 
@@ -111,13 +111,13 @@
                     },
                     {
                         level: function (char) {
-                            return new RegExp(Ovd.reg.username).test(char);
+                            return new RegExp(veg.username).test(char);
                         },
                         msg: "用户名只能由中文、英文、数字及\"-\"、\"_\"组成"
                     },
                     {
                         level: function (char) {
-                            return !new RegExp(Ovd.reg.fullNumber).test(char);
+                            return !new RegExp(veg.fullNumber).test(char);
                         },
                         msg: "用户名不能是纯数字，请重新输入"
                     },
@@ -153,7 +153,7 @@
                     },
                     {
                         level: function (char) {
-                            return new RegExp(Ovd.reg.password).test(char);
+                            return new RegExp(veg.password).test(char);
                         },
                         msg: "密码只能由英文、数字及标点符号组成"
                     },
@@ -204,7 +204,7 @@
                     },
                     {
                         level: function (char) {
-                            return new RegExp(Ovd.reg.password).test(char);
+                            return new RegExp(veg.password).test(char);
                         },
                         msg: "密码只能由英文、数字及标点符号组成"
                     },
@@ -213,7 +213,7 @@
                             var _password = $("#password").val();
 
 
-                            if (new RegExp(Ovd.reg.notempty).test(_password)) {
+                            if (new RegExp(veg.notempty).test(_password)) {
 
                                 return _password.length === char.length && _password === char
                             }
@@ -233,7 +233,7 @@
                 error: [
                     {
                         level: function (char) {
-                            return new RegExp(Ovd.reg.mobile).test(char);
+                            return new RegExp(veg.mobile).test(char);
                         },
                         msg: "手机号码格式有误，请输入正确的手机号"
                     }
