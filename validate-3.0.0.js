@@ -106,7 +106,7 @@
                         _this.parsers(item, $(this).val(), 0);
 
                     }
-
+                    console.log(_cfg)
                 })
             }
         });

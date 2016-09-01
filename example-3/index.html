@@ -58,7 +58,7 @@
     $(function () {
 
         $("#free").on("change", function () {
-            console.log($(this).val())
+//            console.log($(this).val())
 
             if ($(this).val() == "true") {
                 ve_01.setState('#free', true)
@@ -77,19 +77,19 @@
                 t.parent().find(".error").removeClass("errorTips").removeClass("tips").empty()
             },
             required: function (t, s) {
-                console.log(s)
+//                console.log(s)
                 t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
             },
             notice: function (t, s) {
                 t.parent().find(".error").removeClass("errorTips").addClass("tips").html(s);
             },
             success: function (t, s) {
-                console.log(t)
+//                console.log(t)
                 t.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
                 t.parent().find(".sucess").addClass("dis")
             },
             error: function (t, s) {
-                console.log(t)
+//                console.log(t)
                 t.parent().find(".sucess").removeClass("dis")
                 t.parent().find(".error").removeClass("tips").addClass("errorTips").html(s);
             }
@@ -127,7 +127,7 @@
                             var dtd = $.Deferred()
                             $.get('../package.json', function (data) {
 
-                                if (false) {
+                                if (true) {
                                     dtd.resolve()
                                 } else {
                                     dtd.reject()
@@ -179,15 +179,17 @@
                                 if (char.length === _pwdRepeat_val.length && char === _pwdRepeat_val) {
                                     $OncePassword.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
                                     $OncePassword.parent().find(".sucess").addClass("dis")
+//                                    return true
                                 } else {
                                     $OncePassword.parent().find(".error").removeClass("tips").addClass("errorTips").html("两次密码不一致");
                                     $OncePassword.parent().find(".sucess").removeClass("dis");
+//                                    return false
                                 }
                             }
 
                             return true
-                        }
-//                            msg:false
+                        },
+                            msg:false
                     }
                 ]
             },
@@ -253,7 +255,7 @@
 
         var ve_01 = Ovd.create($.extend({config: validator}, ovdFactory));
 
-//            ve_01.listen();
+            ve_01.listen();
         $("#ve_01_btn").on("click", function () {
             ve_01.commit({
                 sbtSucceed: function () {
