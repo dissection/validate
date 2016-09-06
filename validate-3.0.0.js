@@ -36,8 +36,6 @@
 
             if (!cfg[i].custom) {
                 cfg[i].custom = false
-            } else {
-                cfg[i].$cerr = 0
             }
 
 
@@ -138,8 +136,8 @@
                     _opts.success && _opts.success(itemElem)
 
                 } else {
-                    if (item.$cerr > -1) {
-                        _opts.error && _opts.error(itemElem, item.error[item.$cerr].msg)
+                    if (item.cerror) {
+                        _opts.error && _opts.error(itemElem, item.cerror)
                     } else {
                         $.error('请设置报错项')
                     }
@@ -196,14 +194,14 @@
      */
     Validate.prototype.setState = function (elem, state, cerr) {
         var _cfg = this.opts.config;
-        var cerr = cerr || -1
+
         for (var i = 0; i < _cfg.length; i++) {
             if (_cfg[i].elem == elem) {
 
                 _cfg[i].$state = state
 
                 if (_cfg[i].custom) {
-                    _cfg[i].$cerr = cerr
+                    _cfg[i].cerror = cerr
                 } else {
                     $.error("指定报错项,必须是自定义列")
                 }
