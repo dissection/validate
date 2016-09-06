@@ -56,14 +56,14 @@
 <script>
 
     $(function () {
-
+        var k=0
         $("#free").on("change", function () {
 //            console.log($(this).val())
 
             if ($(this).val() == "true") {
                 ve_01.setState('#free', true)
             } else {
-                ve_01.setState('#free', false, "这里是错的呵呵")
+                ve_01.setState('#free', false, "第"+ ++k +"次报错")
             }
 
         });
@@ -172,20 +172,8 @@
                     },
                     {
                         level: function (char) {
-                            var $OncePassword = $("#OncePassword"),
-                                    _pwdRepeat_val = $OncePassword.val();
-
-                            if (new RegExp(veg.notempty).test(_pwdRepeat_val)) {
-                                if (char.length === _pwdRepeat_val.length && char === _pwdRepeat_val) {
-                                    $OncePassword.parent().find(".error").removeClass("tips").removeClass("errorTips").empty();
-                                    $OncePassword.parent().find(".sucess").addClass("dis")
-//                                    return true
-                                } else {
-                                    $OncePassword.parent().find(".error").removeClass("tips").addClass("errorTips").html("两次密码不一致");
-                                    $OncePassword.parent().find(".sucess").removeClass("dis");
-//                                    return false
-                                }
-                            }
+                            var $OncePassword = $("#OncePassword");
+                            $OncePassword.trigger("blur");
 
                             return true
                         },
@@ -251,7 +239,7 @@
 
         var ve_01 = Ovd.create($.extend({config: validator}, ovdFactory));
 
-//            ve_01.listen();
+            ve_01.listen();
         $("#ve_01_btn").on("click", function () {
             ve_01.commit({
                 sbtSucceed: function () {

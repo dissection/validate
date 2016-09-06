@@ -188,7 +188,7 @@
     };
 
     /**
-     * 设置验证列状态 *一般操作 自定义验证的状态*
+     * 设置验证列状态 *只能操作 自定义验证的状态*
      * @param elem
      * @param state
      */
@@ -198,14 +198,23 @@
         for (var i = 0; i < _cfg.length; i++) {
             if (_cfg[i].elem == elem) {
 
-                _cfg[i].$state = state
-
                 if (_cfg[i].custom) {
-                    _cfg[i].cerror = cerr
-                } else {
-                    $.error("指定报错项,必须是自定义列")
+
+                    _cfg[i].$state = state;
+                    if(!state){
+                        if(typeof cerr == "string"){
+                            _cfg[i].cerror = cerr
+                        }else {
+                            $.error("请填写正确的报错项")
+                        }
+
+                    }
+
+                }else {
+                    $.error("设置指定的报错项,必须是自定义列")
                 }
 
+                break
             }
         }
 
