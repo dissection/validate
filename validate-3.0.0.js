@@ -43,26 +43,6 @@
         return cfg
     }
 
-    /**
-     * 延迟对象转换
-     * @param fnDtd
-     * @returns {*}
-     */
-    function dtd(fnDtd) {
-        var ded;
-        if (typeof fnDtd == 'boolean') {
-            ded = $.Deferred();
-
-            if (fnDtd) {
-                ded.resolve()
-            } else {
-                ded.reject()
-            }
-            return ded.promise()
-        } else {
-            return fnDtd
-        }
-    }
 
     /**
      * 创建实体类
@@ -101,10 +81,9 @@
                         item.$state = !item.$required;
                         _opts.init && _opts.init($(this))
                     } else {
-                        _this.parsers(item, $(this).val(), 0);
+                        _this.parsers(item, $(this).val());
 
                     }
-                    console.log(_cfg)
                 })
             }
         });
@@ -128,7 +107,7 @@
 
                 } else {
 
-                    _this.parsers(item, itemElem.val(), 0);
+                    _this.parsers(item, itemElem.val());
                 }
 
             } else {
@@ -145,6 +124,7 @@
             }
         });
 
+
         for (var i = 0; i < _cfg.length; i++) {
 
             if (!_cfg[i].$state) {
@@ -157,31 +137,23 @@
     };
 
 
-    Validate.prototype.parsers = function (item, char, increase) {
+    Validate.prototype.parsers = function (item, char) {
         var _this = this;
         var _opts = this.opts;
-        var itemErr;
+        var itemErr=item.error;
 
-        if (item.error) {
-            itemErr = item.error;
+        if (itemErr) {
 
-            if (increase > itemErr.length - 1) {
-                item.$state = true;
-                _opts.success && _opts.success($(item.elem))
+            for ( var i= 0; i< itemErr.length; i++){
+                if(itemErr[i].level(char)){
+                    item.$state = true;
+                    _opts.success && _opts.success($(item.elem))
+                }else {
+                    item.$state = false;
+                    _opts.error && _opts.error($(item.elem), itemErr[i].msg)
+                }
             }
-            if (itemErr[increase]) {
 
-                dtd(itemErr[increase].level(char))
-                    .done(function () {
-                        _this.parsers(item, char, ++increase)
-                    }).fail(function () {
-                    if (item.$state) {
-                        item.$state = false;
-                    }
-                    _opts.error && _opts.error($(item.elem), itemErr[increase].msg)
-                })
-
-            }
         }
 
 
