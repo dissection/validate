@@ -3,6 +3,9 @@
  *  Omnipotent validation 3.0.x 小而强壮str
  */
 
+
+
+
 !function ($, win, undefined) {
     var Ovd = {
         v: "3.0.0",
